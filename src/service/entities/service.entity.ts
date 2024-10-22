@@ -9,7 +9,7 @@ export enum ServiceType {
 }
 
 @Entity()
-export class Service {
+export class ServiceEntity {
     @PrimaryGeneratedColumn('uuid')
     id: string;
 

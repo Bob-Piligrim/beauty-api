@@ -5,32 +5,37 @@ import { Subservice } from './entities/subservice.entity';
 
 @Injectable()
 export class SubserviceService {
-    constructor(
+    public constructor(
         @InjectRepository(Subservice)
         private readonly subserviceRepository: Repository<Subservice>
     ) {}
 
-    findAll(): Promise<Subservice[]> {
+    public findAll(): Promise<Subservice[]> {
         return this.subserviceRepository.find({ relations: ['service'] });
     }
 
-    findOne(id: string): Promise<Subservice> {
+    public findOne(id: string): Promise<Subservice> {
         return this.subserviceRepository.findOne({
             where: { id },
             relations: ['service']
         });
     }
 
-    create(subservice: Subservice): Promise<Subservice> {
+    public create(subservice: Subservice): Promise<Subservice> {
         return this.subserviceRepository.save(subservice);
     }
 
-    async update(id: string, subservice: Subservice): Promise<Subservice> {
+    public async update(id: string, subservice: Subservice): Promise<Subservice> {
         await this.subserviceRepository.update(id, subservice);
         return this.subserviceRepository.findOne({ where: { id } });
     }
 
-    async remove(id: string): Promise<void> {
-        await this.subserviceRepository.delete(id);
+    public async remove(id: string): Promise<string> {
+        try {
+            await this.subserviceRepository.delete(id);
+            return 'Ok';
+        } catch (error) {
+            throw new Error('Не удалось удалить');
+        }
     }
 }

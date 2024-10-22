@@ -1,36 +1,41 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Service } from './entities/service.entity';
+import { ServiceEntity } from './entities/service.entity';
 
 @Injectable()
 export class ServiceService {
-    constructor(
-        @InjectRepository(Service)
-        private readonly serviceRepository: Repository<Service>
+    public constructor(
+        @InjectRepository(ServiceEntity)
+        private readonly serviceRepository: Repository<ServiceEntity>
     ) {}
 
-    findAll(): Promise<Service[]> {
+    public findAll(): Promise<ServiceEntity[]> {
         return this.serviceRepository.find({ relations: ['subservices'] });
     }
 
-    findOne(id: string): Promise<Service> {
+    public findOne(id: string): Promise<ServiceEntity> {
         return this.serviceRepository.findOne({
             where: { id },
             relations: ['subservices']
         });
     }
 
-    create(service: Service): Promise<Service> {
+    public create(service: ServiceEntity): Promise<ServiceEntity> {
         return this.serviceRepository.save(service);
     }
 
-    async update(id: string, service: Service): Promise<Service> {
+    public async update(id: string, service: ServiceEntity): Promise<ServiceEntity> {
         await this.serviceRepository.update(id, service);
         return this.serviceRepository.findOne({ where: { id } });
     }
 
-    async remove(id: string): Promise<void> {
-        await this.serviceRepository.delete(id);
+    public async remove(id: string): Promise<string> {
+        try {
+            await this.serviceRepository.delete(id);
+            return 'OK';
+        } catch (error) {
+            throw new Error('Не удалось удалить');
+        }
     }
 }
