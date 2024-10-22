@@ -31,11 +31,7 @@ export class ServiceService {
     }
 
     public async remove(id: string): Promise<string> {
-        try {
-            await this.serviceRepository.delete(id);
-            return 'OK';
-        } catch (error) {
-            throw new Error('Не удалось удалить');
-        }
+        await this.serviceRepository.delete(id);
+        return 'Ok';
     }
 }

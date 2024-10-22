@@ -31,11 +31,7 @@ export class SubserviceService {
     }
 
     public async remove(id: string): Promise<string> {
-        try {
-            await this.subserviceRepository.delete(id);
-            return 'Ok';
-        } catch (error) {
-            throw new Error('Не удалось удалить');
-        }
+        await this.subserviceRepository.delete(id);
+        return 'Ok';
     }
 }
